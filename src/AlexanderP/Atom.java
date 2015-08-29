@@ -73,6 +73,7 @@ public class Atom {
     	{
     		g.setColor(new Color(255, 0, 0));
     		g.fillOval((int)(x-m.getMaxDist()), (int)(y-m.getMaxDist()), (int)(2*m.getMaxDist()), (int)(2*m.getMaxDist()));
+    		System.out.println(m.getMaxDist());
     	}
     	else
     	{

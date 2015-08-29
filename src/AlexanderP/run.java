@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-public class run extends JFrame implements Runnable, MouseListener, KeyListener
+public class run extends JFrame implements Runnable, MouseListener, KeyListener, MouseMotionListener
 {
 	ArrayList<Atom> atomList = new ArrayList<Atom>();
 	ArrayList<Bond> bondList = new ArrayList<Bond>();
@@ -51,6 +51,8 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 	
 	double dX = 0;
 	double dY = 0;
+	int mouseX = 0;
+	int mouseY = 0;
 	
 	Material goop = new Material();
 	Material liquid = new Material();
@@ -438,6 +440,9 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 						}
 					}
 				}
+				
+				//updates mouse positions
+				updateMouseLoc();
 
 				//repaints
 				if (paintTime >= repaintTime)
@@ -462,6 +467,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 		Image i=createImage(getSize().width, getSize().height);
 		Graphics2D g2 = (Graphics2D)i.getGraphics();
 		
+		g2.setColor(new Color(0, 0, 0));
 		
 		//draws background
 		g2.drawImage(background, 0, 0, 600, 500, this);
@@ -475,6 +481,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 		
 		g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
 		g2.drawString("Cost: "+currentCost, 450, 120);
+		
 		
 		//draws messages
 		
@@ -526,7 +533,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 		
 		if (pause)
 		{
-			g2.drawRect(rPoint.x, rPoint.y, (int)Math.abs(dX), (int)Math.abs(dY));
+			//g2.drawRect(rPoint.x, rPoint.y, (int)Math.abs(dX), (int)Math.abs(dY));
 			//g2.drawString("Length: "+Integer.toString(length)+"  Height: "+Integer.toString(height), rPoint.x+(int)Math.abs(dX), rPoint.y+(int)Math.abs(dY));
 		
 		}
@@ -618,6 +625,11 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 		g2.drawString(Double.toString(timeStep), 10, 80);
 		*/
 		
+		//draws dot on cursor
+		g2.setColor(selectedMaterial.getColor());
+		//System.out.println(selectedMaterial.getMaxDist());
+		g2.fillOval((int)(mouseX-selectedMaterial.getMaxDist()), (int)(mouseY-selectedMaterial.getMaxDist()), (int)(2*selectedMaterial.getMaxDist()), (int)(2*selectedMaterial.getMaxDist()));
+		
 		g2.dispose();
 		gr.drawImage(i, 0, 0, this);
 	}
@@ -660,6 +672,13 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 	public void mouseReleased(MouseEvent e) {
 		endPoint.setLocation(e.getX(), e.getY());
 		place = true;
+	}
+	
+	public void updateMouseLoc()
+	{
+		Point tmpPoint = MouseInfo.getPointerInfo().getLocation();
+		mouseX = tmpPoint.x;
+		mouseY = tmpPoint.y;
 	}
 
 	public void keyPressed(KeyEvent k) {
@@ -717,6 +736,18 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener
 	}
 
 	public void keyTyped(KeyEvent k) {
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

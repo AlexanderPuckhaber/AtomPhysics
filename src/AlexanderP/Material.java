@@ -126,4 +126,6 @@ private double mass;
     {
     	return cost;
     }
+
+    
 }
