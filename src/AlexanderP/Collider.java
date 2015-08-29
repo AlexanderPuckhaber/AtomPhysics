@@ -122,30 +122,31 @@ public class Collider {
 		int bottom = top+r.height;
 		int left = r.x;
 		int right = left + r.width;
+		double amt = 0.1;
 		
 		for (int i = 0; i < atomList.size(); i++)
 		{
 			if (atomList.get(i).getPosition()[1] > bottom-atomList.get(i).m.getMinDist())
 			{
 				atomList.get(i).setPosition(atomList.get(i).getPosition()[0], bottom-atomList.get(i).m.getMinDist());
-				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*0.5, atomList.get(i).getVelocity()[1]*0.5);
+				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*amt, atomList.get(i).getVelocity()[1]*-amt);
 			}
 			else if (atomList.get(i).getPosition()[1] < top+atomList.get(i).m.getMinDist())
 			{
 				atomList.get(i).setPosition(atomList.get(i).getPosition()[0], top+atomList.get(i).m.getMinDist());
-				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*0.5, atomList.get(i).getVelocity()[1]*0.5);
+				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*amt, atomList.get(i).getVelocity()[1]*-amt);
 			}
 			
 			if (atomList.get(i).getPosition()[0] < left+atomList.get(i).m.getMinDist())
 			{
 				
 				atomList.get(i).setPosition(left+atomList.get(i).m.getMinDist(), atomList.get(i).getPosition()[1]);
-				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*0.5, atomList.get(i).getVelocity()[1]*0.5);
+				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*-amt, atomList.get(i).getVelocity()[1]*amt);
 			}
 			else if (atomList.get(i).getPosition()[0] > right-atomList.get(i).m.getMinDist())
 			{
 				atomList.get(i).setPosition(right-atomList.get(i).m.getMinDist(), atomList.get(i).getPosition()[1]);
-				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*0.5, atomList.get(i).getVelocity()[1]*0.5);
+				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*-amt, atomList.get(i).getVelocity()[1]*amt);
 			}
 		}
 	}
