@@ -7,3 +7,5 @@ The goal is to build a bridge to get the red ball to the other side.
 
 This project features two ArrayLists -- bondList and atomList -- that have to work in unison.
 There are also quadtrees, but they don't really help.
+
+How to run:  This is an eclipse project, so just import it.
