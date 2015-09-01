@@ -53,13 +53,13 @@ public class LevelGenerator {
 		
 		//#4
 		nL = new Level();
-		nL.addHardPoint(new Rectangle(0, 350, 50, 400));
+		nL.addHardPoint(new Rectangle(0, 150, 50, 400));
 		nL.addHardPoint(new Rectangle(200, 50, 50, 50));
 		nL.addHardPoint(new Rectangle(400, 50, 50, 50));
 		nL.addHardPoint(new Rectangle(550, 350, 50, 400));
 		
 		nL.setRoad(new Rectangle(0, 150, 600, 50));
-		nL.setBudget(700);
+		nL.setBudget(800);
 		
 		levelList.add(nL);
 		

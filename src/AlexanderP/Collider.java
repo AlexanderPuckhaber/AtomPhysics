@@ -189,6 +189,17 @@ public class Collider {
 		}
 	}
 	
+	public static void removeCars(ArrayList<Atom> atomList, Material m)
+	{
+		for (int i = 0; i < atomList.size(); i++)
+		{
+			if (atomList.get(i).getMaterial() == m)
+			{
+				atomList.remove(i);
+			}
+		}
+	}
+	
 	
 	public static double getDist(Atom a, Atom b)
 	{

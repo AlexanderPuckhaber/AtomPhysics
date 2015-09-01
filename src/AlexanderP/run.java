@@ -36,7 +36,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	int tick = 0;
 	double tm = 0;
 	double paintTime = 0;
-	double repaintTime = 34;
+	double repaintTime = 17;
 	
 	double maxLengthChange = 0;
 	double maxSpeed = 0;
@@ -288,11 +288,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					Collider.removeOverlappers(atomList, 15);
 					
 					//adds "car"
-					if (carLocation != -1 && atomList.size() > carLocation)
-					{
-						if (atomList.get(carLocation).getMaterial() == car)
-							atomList.remove(carLocation);
-					}
+					Collider.removeCars(atomList, car);
 					setter.init(atomList, 1, car);
 					carLocation = atomList.size()-1;
 					atomList.get(carLocation).setPosition(currentLevel.road.x+50, currentLevel.road.y-50);
@@ -549,6 +545,8 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		}
 		//*/
 		
+		
+		
 		for (int u = 0; u < bondList.size(); u++)
 		{
 			if (bondList.get(u).length <= bondList.get(u).getMaxDist())
@@ -604,10 +602,12 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					g2.setColor(new Color(pushColor, 255, pullColor));
 				}
 				
+				g2.setStroke(new BasicStroke(3));
 				g2.drawLine((int)atomList.get(host).getPosition()[0], 
 						(int)atomList.get(host).getPosition()[1], 
 						(int)atomList.get(target).getPosition()[0], 
 						(int)atomList.get(target).getPosition()[1]);
+				g2.setStroke(new BasicStroke(1));
 				//double force = bondList.get(u).getForce();
 				
 				//g2.drawString(Double.toString(Force.getRotation(atomList.get(host), atomList.get(target))[0]*force), (int)atomList.get(host).getPosition()[0], 
@@ -625,10 +625,6 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		g2.drawString(Double.toString(timeStep), 10, 80);
 		*/
 		
-		//draws dot on cursor
-		g2.setColor(selectedMaterial.getColor());
-		//System.out.println(selectedMaterial.getMaxDist());
-		g2.fillOval((int)(mouseX-selectedMaterial.getMaxDist()), (int)(mouseY-selectedMaterial.getMaxDist()), (int)(2*selectedMaterial.getMaxDist()), (int)(2*selectedMaterial.getMaxDist()));
 		
 		g2.dispose();
 		gr.drawImage(i, 0, 0, this);
