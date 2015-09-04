@@ -37,6 +37,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	double tm = 0;
 	double paintTime = 0;
 	double repaintTime = 17;
+	static double scale = 2;
 	
 	double maxLengthChange = 0;
 	double maxSpeed = 0;
@@ -92,7 +93,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		worldBorder.setBounds(0, 0, 600, 500);
 		
 		background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("background.png"));
-		background = background.getScaledInstance(600, 500, 1);
+		background = background.getScaledInstance((int)(600*scale), (int)(500*scale), 1);
 		
 		//makes levels
 		LevelGenerator.generateLevels(levelList);
@@ -106,7 +107,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		goop.setMinDist(13);
 		goop.setMaxDist(40);
 		goop.setDampener(10);
-		goop.setTensileStrength(0.2);
+		goop.setTensileStrength(0.3);
 		goop.setCompressiveStrength(1);
 		goop.setEquilibrium(30);
 		goop.setSpacing(30);
@@ -146,7 +147,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		liquid.setCost(2);
 		liquid.setColor(new Color(50, 50, 255));
 		
-		car.setMass(2.2);
+		car.setMass(3);
 		car.setMinDist(13);
 		car.setMaxDist(50);
 		car.setDampener(13);
@@ -463,6 +464,15 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		Image i=createImage(getSize().width, getSize().height);
 		Graphics2D g2 = (Graphics2D)i.getGraphics();
 		
+		//scales
+		g2.scale(scale, scale);
+		
+		//sets antialiasing
+	    g2.setRenderingHints(new RenderingHints(
+	             RenderingHints.KEY_TEXT_ANTIALIASING,
+	             RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+	    g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
+		
 		g2.setColor(new Color(0, 0, 0));
 		
 		//draws background
@@ -500,10 +510,11 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 			
 		}
 		
-		
+		g2.setColor(new Color(255, 0, 0));
 		//for tutorial
 		if (currentLevelNumber == 0)
 		{
+			
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 			g2.drawString("BRIDGE BUILDER", 40, 50);
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
@@ -641,7 +652,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	public static void main(String[] args)
 	{
 		run frame = new run ();
-		frame.setSize(600, 500);
+		frame.setSize((int)(600*scale), (int)(500*scale));
 		frame.setVisible(true);
 	}
 	public void update(Graphics g)
@@ -662,19 +673,19 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		startPoint.setLocation(e.getX(), e.getY());
+		startPoint.setLocation(e.getX()/scale, e.getY()/scale);
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		endPoint.setLocation(e.getX(), e.getY());
+		endPoint.setLocation(e.getX()/scale, e.getY()/scale);
 		place = true;
 	}
 	
 	public void updateMouseLoc()
 	{
 		Point tmpPoint = MouseInfo.getPointerInfo().getLocation();
-		mouseX = tmpPoint.x;
-		mouseY = tmpPoint.y;
+		mouseX = (int)(tmpPoint.x/scale);
+		mouseY = (int)(tmpPoint.y/scale);
 	}
 
 	public void keyPressed(KeyEvent k) {
