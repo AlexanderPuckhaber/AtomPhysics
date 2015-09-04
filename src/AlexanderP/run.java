@@ -117,7 +117,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		concrete.setMinDist(13);
 		concrete.setMaxDist(40);
 		concrete.setDampener(13);
-		concrete.setTensileStrength(0.3);
+		concrete.setTensileStrength(0.1);
 		concrete.setCompressiveStrength(1);
 		concrete.setEquilibrium(30);
 		concrete.setSpacing(31);
