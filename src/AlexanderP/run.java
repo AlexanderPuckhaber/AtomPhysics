@@ -12,6 +12,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 {
 	ArrayList<Atom> atomList = new ArrayList<Atom>();
 	ArrayList<Bond> bondList = new ArrayList<Bond>();
+	ArrayList<Button> buttonList = new ArrayList<Button>();
 	//ArrayList<Integer> alreadyDone = new ArrayList<Integer>();
 	public static boolean stick = true;
 	
@@ -37,7 +38,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	double tm = 0;
 	double paintTime = 0;
 	double repaintTime = 17;
-	static double scale = 2;
+	static double scale = 1.95;
 	
 	double maxLengthChange = 0;
 	double maxSpeed = 0;
@@ -54,6 +55,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	double dY = 0;
 	int mouseX = 0;
 	int mouseY = 0;
+	boolean pressed = false;
 	
 	Material goop = new Material();
 	Material liquid = new Material();
@@ -661,7 +663,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		
+		pressed = true;
 	}
 
 	public void mouseEntered(MouseEvent e) {
