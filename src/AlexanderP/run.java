@@ -72,6 +72,8 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	int clearMessageTime = 1000;
 	int maxClearMessageTime = 1000;
 	
+	ButtonManager bManager;
+	
 	
 	//levels
 	ArrayList<Level> levelList = new ArrayList<Level>();
@@ -99,6 +101,10 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		
 		//makes levels
 		LevelGenerator.generateLevels(levelList);
+		
+		//initializes buttons
+		bManager = new ButtonManager();
+		buttonList = bManager.createButtons();
 		
 		
 		currentLevel = levelList.get(currentLevelNumber);
@@ -199,6 +205,14 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				
 				t.sleep((int)(1000*Math.abs(delay)));
 				paintTime += 1000*timeStep;
+				
+				
+				//button actions
+				if (bManager.findButtonPressed(buttonList, "Goop ($10)"))
+					selectedMaterial = goop;
+				if (bManager.findButtonPressed(buttonList, "Goop ($10)"))
+					selectedMaterial = goop;
+				
 				
 				//places atoms with mouse
 				if (place && pause)
@@ -551,6 +565,10 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		g2.setColor(new Color(0, 255, 255));
 		root.draw(g2);
 		
+		
+		//draw buttons
+		bManager.draw(g2, buttonList);
+		
 		g2.setColor(new Color(0, 0, 0));
 		for (int p = 0; p < atomList.size(); p++)
 		{
@@ -621,6 +639,9 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 						(int)atomList.get(target).getPosition()[0], 
 						(int)atomList.get(target).getPosition()[1]);
 				g2.setStroke(new BasicStroke(1));
+				
+				
+				
 				//double force = bondList.get(u).getForce();
 				
 				//g2.drawString(Double.toString(Force.getRotation(atomList.get(host), atomList.get(target))[0]*force), (int)atomList.get(host).getPosition()[0], 
@@ -664,6 +685,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 
 	public void mouseClicked(MouseEvent e) {
 		pressed = true;
+		bManager.checkButtons(buttonList, new Point(mouseX, mouseY));
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -688,6 +710,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		Point tmpPoint = MouseInfo.getPointerInfo().getLocation();
 		mouseX = (int)(tmpPoint.x/scale);
 		mouseY = (int)(tmpPoint.y/scale);
+		bManager.checkButtonHover(buttonList, new Point(mouseX, mouseY));
 	}
 
 	public void keyPressed(KeyEvent k) {
