@@ -206,13 +206,19 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				t.sleep((int)(1000*Math.abs(delay)));
 				paintTime += 1000*timeStep;
 				
+				if (pressed)
+					bManager.checkButtons(buttonList, new Point(mouseX, mouseY));
+				
 				
 				//button actions
 				if (bManager.findButtonPressed(buttonList, "Goop ($10)"))
 					selectedMaterial = goop;
-				if (bManager.findButtonPressed(buttonList, "Goop ($10)"))
-					selectedMaterial = goop;
-				
+				if (bManager.findButtonPressed(buttonList, "Concrete ($20)"))
+					selectedMaterial = concrete;
+				if (bManager.findButtonPressed(buttonList, "Steel ($50)"))
+					selectedMaterial = steel;
+				if (bManager.findButtonPressed(buttonList, "Liquid ($2)"))
+					selectedMaterial = liquid;
 				
 				//places atoms with mouse
 				if (place && pause)
@@ -685,7 +691,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 
 	public void mouseClicked(MouseEvent e) {
 		pressed = true;
-		bManager.checkButtons(buttonList, new Point(mouseX, mouseY));
+		
 	}
 
 	public void mouseEntered(MouseEvent e) {
