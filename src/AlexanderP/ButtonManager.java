@@ -61,17 +61,22 @@ public class ButtonManager
 	{
 		int i = 0;
 		boolean found = false;
-		while (i < buttonList.size() && !found)
+		while (i < buttonList.size() && !found) //can only press 1 button
 		{
 			if (buttonList.get(i).getDescription().equalsIgnoreCase(desc))
 			{
 				found = true;
+				
 			}
 				
 			i++;
 		}
 		
-		return buttonList.get(i-1).getPressed();
+		boolean pressed = buttonList.get(i-1).getPressed();
+		if (pressed)
+			System.out.println("Button "+i+" was pressed");
+			
+		return pressed;
 	}
 	
 }

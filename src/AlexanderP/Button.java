@@ -30,6 +30,7 @@ public class Button
 	
 	public void checkPressed(Point p)
 	{
+		pressed = false;
 		if (r.contains(p))
 		{
 			pressed = true;

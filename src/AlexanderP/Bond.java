@@ -28,6 +28,11 @@ public class Bond {
 		length = newLength;
 	}
 	
+	public void setLastLength(double newLastLength)
+	{
+		lastLength = newLastLength;
+	}
+	
 	public void setTargets(int newA, int newB)
 	{
 		a = newA;

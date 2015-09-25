@@ -17,11 +17,8 @@ public class Force {
 		
 		b.getBondAvg(a1, a2);
 		
+		updateLength(b);
 		double distance = b.getLength();
-		if (b.getLastLength() == 0)
-		{
-			b.lastLength = distance;
-		}
 		double force = 0;
 		
 		double totalMass = a1.getMaterial().getMass()+a2.getMaterial().getMass();
@@ -121,6 +118,15 @@ public class Force {
 	    double yAngle = ((a.getPosition()[1]-b.getPosition()[1])/hypotenuse);
 
 	    return new double[]{xAngle, yAngle};
+	}
+	
+	public static void updateLength(Bond b)
+	{
+		double distance = b.getLength();
+		if (b.getLastLength() == 0)
+		{
+			b.setLastLength(distance);
+		}
 	}
 	
 	

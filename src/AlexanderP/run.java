@@ -38,7 +38,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	double tm = 0;
 	double paintTime = 0;
 	double repaintTime = 17;
-	static double scale = 1.95;
+	static double scale = 1.5;
 	
 	double maxLengthChange = 0;
 	double maxSpeed = 0;
@@ -341,7 +341,11 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					//System.out.println(atomList.size());
 				}
 				
-				
+				/********
+				 * UPDATES LENGTHS
+				 */
+				for (Bond b: bondList)
+					Force.updateLength(b);
 				
 				/*********
 				 * UPDATES QUADTREES
