@@ -1,16 +1,18 @@
 package AlexanderP;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class QuadTree 
 {
-	double x, y, length, height;
+	private double x, y, length, height;
 	public Rectangle2D.Double r, bufferRect;
 	Boolean hasChildren;
 	QuadTree nw, ne, sw, se;
@@ -85,7 +87,7 @@ public class QuadTree
 				for (int i = 0; i < edgeList.size(); i++)
 				{
 					Point2D.Double p = new Point2D.Double();
-					p.setLocation(atomList.get(edgeList.get(i)).getPosition()[0], atomList.get(edgeList.get(i)).getPosition()[1]);
+					p.setLocation(atomList.get(edgeList.get(i)).getPoint().x, atomList.get(edgeList.get(i)).getPoint().y);
 					
 					if (bR.contains(p))
 					{
@@ -97,6 +99,8 @@ public class QuadTree
 		}
 		return nullList;
 	}
+	
+
 	
 	//puts atoms in quads.  If the quads have too many atoms, they split
 	public void addAtoms(ArrayList<Atom> atomList, ArrayList<Integer> newAList, int maxAmount, int minSize)
@@ -113,7 +117,7 @@ public class QuadTree
 		{
 			for (int i = 0; i < atomList.size(); i++)
 			{
-				p.setLocation(atomList.get(i).getPosition()[0], atomList.get(i).getPosition()[1]);
+				p.setLocation(atomList.get(i).getPoint().x, atomList.get(i).getPoint().y);
 				
 				if (r.contains(p))
 				{
@@ -140,7 +144,7 @@ public class QuadTree
 		else {
 			for (int g = 0; g < newAList.size(); g++)
 			{
-				p.setLocation(atomList.get(newAList.get(g)).getPosition()[0], atomList.get(newAList.get(g)).getPosition()[1]);
+				p.setLocation(atomList.get(newAList.get(g)).getPoint().x, atomList.get(newAList.get(g)).getPoint().y);
 				
 				if (r.contains(p))
 				{
@@ -219,8 +223,8 @@ public class QuadTree
 		//makes rectangle smaller by the distance
 		cR = new Rectangle2D.Double(cR.x+dist, cR.y+dist, cR.width-dist, cR.height-dist);
 		
-		aX = atomList.get(y).getPosition()[0];
-		aY = atomList.get(y).getPosition()[1];
+		aX = atomList.get(y).getPoint().x;
+		aY = atomList.get(y).getPoint().y;
 		p = new Point2D.Double(aX, aY);
 		
 		//if the point is completely inside, do nothing
@@ -299,11 +303,16 @@ public class QuadTree
 			//sets atom a and b
 			for (int i = 0; i < bondList.size(); i++)
 			{
+				int ai = bondList.get(i).getTargets()[0];
+				int bi = bondList.get(i).getTargets()[1];
+				
+				if (ai < atomList.size() && bi < atomList.size())
+				{
 				a = atomList.get(bondList.get(i).getTargets()[0]);
 				b = atomList.get(bondList.get(i).getTargets()[1]);
 				
-				p1 = new Point2D.Double(a.getPosition()[0], a.getPosition()[1]);
-				p2 = new Point2D.Double(b.getPosition()[0], b.getPosition()[1]);
+				p1 = new Point2D.Double(a.getPoint().x, a.getPoint().y);
+				p2 = new Point2D.Double(b.getPoint().x, b.getPoint().y);
 				
 				if (r.contains(p1) && r.contains(p2))
 				{
@@ -325,6 +334,7 @@ public class QuadTree
 						bList.add(newBList.get(i));
 					}
 				}
+				}
 			}
 		}
 		//if it is NOT root
@@ -335,8 +345,8 @@ public class QuadTree
 				a = atomList.get(bondList.get(newBList.get(i)).getTargets()[0]);
 				b = atomList.get(bondList.get(newBList.get(i)).getTargets()[1]);
 				
-				p1 = new Point2D.Double(a.getPosition()[0], a.getPosition()[1]);
-				p2 = new Point2D.Double(b.getPosition()[0], b.getPosition()[1]);
+				p1 = new Point2D.Double(a.getPoint().x, a.getPoint().y);
+				p2 = new Point2D.Double(b.getPoint().x, b.getPoint().y);
 				
 				if (r.contains(p1) && r.contains(p2))
 				{
@@ -453,10 +463,84 @@ public class QuadTree
 		return nullList;
 	}
 	
-	//draws it (mostly for debug)
-	public void draw(Graphics2D g)
+	public void drawQuadWithPoint(Graphics2D g, Point2D.Double p)
 	{
-		g.setColor(new Color(0, 255, 255, 40));
+		if (r.contains(p))
+		{
+			if (hasChildren)
+			{
+				ne.drawQuadWithPoint(g, p);
+				nw.drawQuadWithPoint(g, p);
+				se.drawQuadWithPoint(g, p);
+				sw.drawQuadWithPoint(g, p);
+			}
+			else
+			{
+				this.draw(g, Color.orange);
+			}
+		}
+	}
+	
+	public void highlightAtomsInQuadWithPoint(Point2D.Double p, int mX, int mY, ArrayList<Atom> atomList)
+	{
+		if (r.contains(p))
+		{
+			if (hasChildren)
+			{
+				ne.highlightAtomsInQuadWithPoint(p, mX, mY, atomList);
+				nw.highlightAtomsInQuadWithPoint(p, mX, mY, atomList);
+				se.highlightAtomsInQuadWithPoint(p, mX, mY, atomList);
+				sw.highlightAtomsInQuadWithPoint(p, mX, mY, atomList);
+			}
+			else
+			{
+				ArrayList<Integer> tmpList = new ArrayList<Integer>();
+				tmpList = aList;
+				
+				for (int i = 0; i < tmpList.size(); i++)
+				{
+					System.out.println(i);
+					Atom a = new Atom();
+					int maxDist = 100;
+					int y = tmpList.get(i);
+					if (y < atomList.size())
+					{
+						a = atomList.get(y);
+						System.out.println(y);
+						//if (Math.sqrt(Math.pow(a.getPoint().x-mX, 2)+Math.pow(a.getPoint().y-mY, 2)) < maxDist)
+						{
+							a.setColor(new Color(255, 255, 0));
+							System.out.println(y);
+						}
+					}
+				}
+			}
+
+
+		}
+
+
+	}
+	
+	public void highlightAtom(Graphics2D g, int mX, int mY, Boolean clicked, ArrayList<Atom> atomList)
+	{
+		
+		Point2D.Double p = new Point2D.Double(mX, mY);
+		drawQuadWithPoint(g, p);
+		QuadTree qua = new QuadTree(-1, -1, -1, -1);
+		highlightAtomsInQuadWithPoint(p, mX, mY, atomList);
+		
+		System.out.println(qua.r.x);
+		
+		g.fillRect((int)qua.r.x, (int)qua.r.y, (int)qua.r.width, (int)qua.r.height);
+		
+		
+	}
+	
+	//draws it (mostly for debug)
+	public void draw(Graphics2D g, Color c)
+	{
+		g.setColor(c);
 		
 		if (hasChildren)
 		{
@@ -493,10 +577,10 @@ public class QuadTree
 		
 		if (hasChildren)
 		{
-			nw.draw(g);
-			ne.draw(g);
-			sw.draw(g);
-			se.draw(g);
+			nw.draw(g, c);
+			ne.draw(g, c);
+			sw.draw(g, c);
+			se.draw(g, c);
 		}
 	}
 	

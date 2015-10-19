@@ -13,12 +13,14 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	ArrayList<Atom> atomList = new ArrayList<Atom>();
 	ArrayList<Bond> bondList = new ArrayList<Bond>();
 	ArrayList<Button> buttonList = new ArrayList<Button>();
+	LevelGenerator lGen = new LevelGenerator();
 	//ArrayList<Integer> alreadyDone = new ArrayList<Integer>();
 	public static boolean stick = true;
 	
 	boolean doRectangle = false;
 	
 	Container con = getContentPane();
+	Renderer drawer = new Renderer();
 	Thread t = new Thread(this);
 	ArrayList<Point2D.Double> pList = new ArrayList<Point2D.Double>();
 	ArrayList<Integer> aList = new ArrayList<Integer>();
@@ -100,7 +102,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		background = background.getScaledInstance((int)(600*scale), (int)(500*scale), 1);
 		
 		//makes levels
-		LevelGenerator.generateLevels(levelList);
+		lGen.generateLevels(levelList);
 		
 		//initializes buttons
 		bManager = new ButtonManager();
@@ -176,6 +178,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 			
 			time = System.nanoTime()/1000000;
 			time /= 1000;
+			
 			
 			while(true)
 			{
@@ -392,7 +395,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 						atomList.get(l).updateConnections(bondList, l);
 					}
 					//Collider.ground(500, atomList);
-					Collider.border(worldBorder, atomList);
+					Collider.doBorder(worldBorder, atomList);
 				}
 				
 				if (pause)
@@ -455,8 +458,20 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 						}
 					}
 					
+					//after tutorial, skip to highscore level
+					if (currentLevel.passed && currentLevelNumber == 0)
+					{
+						if (lGen.highScore > 1 && lGen.highScore+1 < levelList.size())
+						{
+							currentLevelNumber = lGen.highScore;
+						}
+					}
+					
 					if (currentLevel.passed)
 					{
+						//update highScore
+						lGen.writeHighScore(currentLevelNumber);
+						
 						if (currentLevelNumber < levelList.size()-1)
 						{
 							currentLevelNumber++;
@@ -569,104 +584,18 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		//draws level
 		currentLevel.draw(g2);
 		
-		if (pause)
-		{
-			//g2.drawRect(rPoint.x, rPoint.y, (int)Math.abs(dX), (int)Math.abs(dY));
-			//g2.drawString("Length: "+Integer.toString(length)+"  Height: "+Integer.toString(height), rPoint.x+(int)Math.abs(dX), rPoint.y+(int)Math.abs(dY));
 		
-		}
-		
-		//draws quadtrees
-		g2.setColor(new Color(0, 255, 255));
-		root.draw(g2);
+		drawer.drawQuadTrees(g2, root);
 		
 		
 		//draw buttons
 		bManager.draw(g2, buttonList);
 		
-		g2.setColor(new Color(0, 0, 0));
-		for (int p = 0; p < atomList.size(); p++)
-		{
-			atomList.get(p).draw(g2);
-		}
-		//*/
+		drawer.drawAndHighlightAtoms(g2, atomList, root, mouseX, mouseY, pressed);
 		
 		
+		drawer.drawBonds(g2, bondList, atomList);
 		
-		for (int u = 0; u < bondList.size(); u++)
-		{
-			if (bondList.get(u).length <= bondList.get(u).getMaxDist())
-			{
-				int host = bondList.get(u).getTargets()[0];
-				int target = bondList.get(u).getTargets()[1];
-				
-				g2.setColor(new Color(255, 255, 0));
-				atomList.get(host).draw(g2);
-				
-				g2.setColor(new Color(0, 0, 255));
-				atomList.get(target).draw(g2);
-				
-				g2.setColor(new Color(0, 0, 0));
-				
-				
-				
-				if (!bondList.get(u).getStick())
-				{
-					g2.setColor(new Color(255, 0, 0));
-				}
-				else
-				{
-					g2.setColor(new Color(0, 255, 0));
-				}
-				
-				int pushColor = (int)(0.02/timeStep*bondList.get(u).getForce());
-				int pullColor = -(int)(0.02/timeStep*bondList.get(u).getForce());
-				
-				if (pushColor > 255)
-				{
-					pushColor = 255;
-				}
-				else if (pushColor < 0)
-				{
-					pushColor = 0;
-				}
-				if (pullColor > 255)
-				{
-					pullColor = 255;
-				}
-				else if (pullColor < 0)
-				{
-					pullColor = 0;				
-				}
-				
-				if (bondList.get(u).stick)
-				{
-					g2.setColor(new Color(pushColor, 0, pullColor));
-				}
-				else
-				{
-					g2.setColor(new Color(pushColor, 255, pullColor));
-				}
-				
-				g2.setStroke(new BasicStroke(3));
-				g2.drawLine((int)atomList.get(host).getPosition()[0], 
-						(int)atomList.get(host).getPosition()[1], 
-						(int)atomList.get(target).getPosition()[0], 
-						(int)atomList.get(target).getPosition()[1]);
-				g2.setStroke(new BasicStroke(1));
-				
-				
-				
-				//double force = bondList.get(u).getForce();
-				
-				//g2.drawString(Double.toString(Force.getRotation(atomList.get(host), atomList.get(target))[0]*force), (int)atomList.get(host).getPosition()[0], 
-				//		10+(int)atomList.get(host).getPosition()[1]);
-				/*
-				g2.drawString(Double.toString(bondList.get(u).getForce()), (int)atomList.get(bondList.get(u).getTargets()[0]).getPosition()[0], 
-				(int)atomList.get(bondList.get(u).getTargets()[0]).getPosition()[1]);		
-				//*/
-			}
-		}
 		
 		/*
 		g2.drawString(Double.toString(maxLengthChange), 10, 40);

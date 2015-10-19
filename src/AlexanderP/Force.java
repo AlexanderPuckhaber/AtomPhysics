@@ -63,7 +63,7 @@ public class Force {
 		if (a1.isActive() && a2.isRoad() && distance < b.getMaxDist())
 		{
 			//if the other is to the left and below
-			if (a2.getPosition()[0] < a1.getPosition()[0] && a2.getPosition()[1] > a1.getPosition()[1])
+			if (a2.getPoint().x < a1.getPoint().x && a2.getPoint().y > a1.getPoint().y)
 			{
 				//repel
 				force += moveForce;
@@ -74,7 +74,7 @@ public class Force {
 		else if (a2.isActive() && a1.isRoad() && distance < b.getMaxDist())
 		{
 			//if the other is to the left and below
-			if (a1.getPosition()[0] < a2.getPosition()[0] && a1.getPosition()[1] > a2.getPosition()[1])
+			if (a1.getPoint().x < a2.getPoint().x && a1.getPoint().y > a2.getPoint().y)
 			{
 				//repel
 				force += moveForce;
@@ -113,9 +113,9 @@ public class Force {
 	
 	public static double[] getRotation (Atom a, Atom b){
 	    double hypotenuse = Collider.getDist(a, b);
-	    double xAngle = ((a.getPosition()[0]-b.getPosition()[0])/hypotenuse);
+	    double xAngle = ((a.getPoint().x-b.getPoint().x)/hypotenuse);
 	    
-	    double yAngle = ((a.getPosition()[1]-b.getPosition()[1])/hypotenuse);
+	    double yAngle = ((a.getPoint().y-b.getPoint().y)/hypotenuse);
 
 	    return new double[]{xAngle, yAngle};
 	}

@@ -2,6 +2,7 @@ package AlexanderP;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,15 +12,15 @@ public class Atom {
 	
 	public Material m;
     
-    private double x;
-    private double y;
+	private Point2D.Double p;
+    private Point2D.Double lP;
     
     private double xVel;
     private double yVel;
     
     private boolean inHardPoint = false;
     private boolean isActive = false;
-    
+    public boolean firstStep;
     public boolean isRoad = false;
     
     
@@ -27,23 +28,24 @@ public class Atom {
     
     public Atom()
     {
-    	x = 0;
-    	y = 0;
+    	p = new Point2D.Double(0, 0);
+    	lP = new Point2D.Double(0, 0);
+    	firstStep = true;
     }
     
     public void move(double timeStep)
     {
-    	//x += xVel*Math.pow(timeStep, 2);
-    	//y -= yVel*Math.pow(timeStep, 2);
+    	lP.x = p.x;
+    	lP.y = p.y;
     	
-    	
-    	//if it's not in a hardpoint
     	if (!inHardPoint)
     	{
-    		x += xVel*timeStep;
-    		yVel -= 100*timeStep;
-    		y -= yVel*timeStep;
+    	p.x += xVel*timeStep;
+    	yVel -= 100*timeStep;
+    	p.y -= yVel*timeStep;
     	}
+
+    	firstStep = false;
     	
     }
     
@@ -71,20 +73,18 @@ public class Atom {
     	//g.drawOval((int)(x-maxDist), (int)(y-maxDist), (int)(2*maxDist), (int)(2*maxDist));
     	if (isActive)
     	{
-    		g.setColor(new Color(255, 0, 0));
-    		g.fillOval((int)(x-m.getMaxDist()), (int)(y-m.getMaxDist()), (int)(2*m.getMaxDist()), (int)(2*m.getMaxDist()));
-    		//g.fillOval((int)x, (int)y, 50, 50);
-    		System.out.println(m.getMaxDist());
+    		g.fillOval((int)(p.x-m.getMinDist()), (int)(p.y-m.getMinDist()), (int)(2*m.getMinDist()), (int)(2*m.getMinDist()));
+        	g.drawOval((int)(p.x-m.getMaxDist()), (int)(p.y-m.getMaxDist()), (int)(2*m.getMaxDist()), (int)(2*m.getMaxDist()));
     	}
     	else
     	{
-    		g.fillOval((int)(x-m.getMinDist()), (int)(y-m.getMinDist()), (int)(2*m.getMinDist()), (int)(2*m.getMinDist()));
+    		g.fillOval((int)(p.x-m.getMinDist()), (int)(p.y-m.getMinDist()), (int)(2*m.getMinDist()), (int)(2*m.getMinDist()));
     	}
     	
     	if (isRoad)
     	{
     		g.setColor(Color.black);
-    		g.fillOval((int)(x-m.getMinDist())+5, (int)(y-m.getMinDist())+5, (int)(2*m.getMinDist()-10), (int)(2*m.getMinDist())-10);
+    		g.fillOval((int)(p.x-m.getMinDist())+5, (int)(p.y-m.getMinDist())+5, (int)(2*m.getMinDist()-10), (int)(2*m.getMinDist())-10);
     		g.setColor(c);
     	}
     	
@@ -94,8 +94,8 @@ public class Atom {
     
     public void setPosition(double newX, double newY)
     {
-    	x = newX;
-    	y = newY;
+    	p.x = newX;
+    	p.y = newY;
     }
     
     public void setVelocity(double newXVel, double newYVel)
@@ -128,6 +128,8 @@ public class Atom {
     //also randomizes color
     public void setColor(Color newColor) 
     {
+    	if (firstStep)
+    	{
     	int r = newColor.getRed();
     	int g = newColor.getGreen();
     	int b = newColor.getBlue();
@@ -152,14 +154,17 @@ public class Atom {
     		b = 255;
     	
     	c = new Color(r, g, b);
+    	}
+    	else
+    		c = newColor;
 	}
     
     
     //get methods
     
-    public double[] getPosition()
+    public Point2D.Double getPoint()
     {
-    	return new double[]{x, y};
+    	return p;
     }
     
     public double[] getVelocity()

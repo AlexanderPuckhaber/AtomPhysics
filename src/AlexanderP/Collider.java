@@ -103,49 +103,39 @@ public class Collider {
 		}
 	}
 	
-	public static void ground(double y, ArrayList<Atom> atomList)
-	{
-		for (int i = 0; i < atomList.size(); i++)
-		{
-			if (atomList.get(i).getPosition()[1] > y-atomList.get(i).m.getMinDist())
-			{
-				atomList.get(i).setPosition(atomList.get(i).getPosition()[0], y-atomList.get(i).m.getMinDist());
-				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*0.5, atomList.get(i).getVelocity()[1]*0.5);
-			}
-		}
-	}
+
 	
-	public static void border(Rectangle r, ArrayList<Atom> atomList)
+	public static void doBorder(Rectangle r, ArrayList<Atom> atomList)
 	{
 		
 		int top = r.y;
 		int bottom = top+r.height;
 		int left = r.x;
 		int right = left + r.width;
-		double amt = 0.1;
+		double amt = 0.4;
 		
 		for (int i = 0; i < atomList.size(); i++)
 		{
-			if (atomList.get(i).getPosition()[1] > bottom-atomList.get(i).m.getMinDist())
+			if (atomList.get(i).getPoint().y > bottom-atomList.get(i).m.getMinDist())
 			{
-				atomList.get(i).setPosition(atomList.get(i).getPosition()[0], bottom-atomList.get(i).m.getMinDist());
+				atomList.get(i).setPosition(atomList.get(i).getPoint().x, bottom-atomList.get(i).m.getMinDist());
 				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*amt, atomList.get(i).getVelocity()[1]*-amt);
 			}
-			else if (atomList.get(i).getPosition()[1] < top+atomList.get(i).m.getMinDist())
+			else if (atomList.get(i).getPoint().y < top+atomList.get(i).m.getMinDist())
 			{
-				atomList.get(i).setPosition(atomList.get(i).getPosition()[0], top+atomList.get(i).m.getMinDist());
+				atomList.get(i).setPosition(atomList.get(i).getPoint().x, top+atomList.get(i).m.getMinDist());
 				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*amt, atomList.get(i).getVelocity()[1]*-amt);
 			}
 			
-			if (atomList.get(i).getPosition()[0] < left+atomList.get(i).m.getMinDist())
+			if (atomList.get(i).getPoint().x < left+atomList.get(i).m.getMinDist())
 			{
 				
-				atomList.get(i).setPosition(left+atomList.get(i).m.getMinDist(), atomList.get(i).getPosition()[1]);
+				atomList.get(i).setPosition(left+atomList.get(i).m.getMinDist(), atomList.get(i).getPoint().y);
 				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*-amt, atomList.get(i).getVelocity()[1]*amt);
 			}
-			else if (atomList.get(i).getPosition()[0] > right-atomList.get(i).m.getMinDist())
+			else if (atomList.get(i).getPoint().x > right-atomList.get(i).m.getMinDist())
 			{
-				atomList.get(i).setPosition(right-atomList.get(i).m.getMinDist(), atomList.get(i).getPosition()[1]);
+				atomList.get(i).setPosition(right-atomList.get(i).m.getMinDist(), atomList.get(i).getPoint().y);
 				atomList.get(i).setVelocity(atomList.get(i).getVelocity()[0]*-amt, atomList.get(i).getVelocity()[1]*amt);
 			}
 		}
@@ -153,7 +143,7 @@ public class Collider {
 	
 	public static void stickToHardPoints(Atom a, Level currentLevel)
 	{
-		Point2D.Double p = new Point2D.Double(a.getPosition()[0], a.getPosition()[1]);
+		Point2D.Double p = new Point2D.Double(a.getPoint().x, a.getPoint().y);
 		
 		for (int i = 0; i < currentLevel.getHardPoints().size(); i++)
 		{
@@ -203,8 +193,8 @@ public class Collider {
 	
 	public static double getDist(Atom a, Atom b)
 	{
-		double xDist = a.getPosition()[0]-b.getPosition()[0];
-		double yDist = a.getPosition()[1]-b.getPosition()[1];
+		double xDist = a.getPoint().x-b.getPoint().x;
+		double yDist = a.getPoint().y-b.getPoint().y;
 		
 		double dist = Math.sqrt((xDist * xDist) + (yDist * yDist));
 		return dist;
@@ -212,8 +202,8 @@ public class Collider {
 	
 	public static double getRoughDist(Atom a, Atom b)
 	{
-		double xDist = a.getPosition()[0]-b.getPosition()[0];
-		double yDist = a.getPosition()[1]-b.getPosition()[1];
+		double xDist = a.getPoint().x-b.getPoint().x;
+		double yDist = a.getPoint().y-b.getPoint().y;
 		
 		return xDist+yDist;
 	}

@@ -66,7 +66,7 @@ public class Level {
 	{
 		for (int i = 0; i < atomList.size(); i++)
 		{
-			Point2D.Double p = new Point2D.Double(atomList.get(i).getPosition()[0], atomList.get(i).getPosition()[1]);
+			Point2D.Double p = new Point2D.Double(atomList.get(i).getPoint().x, atomList.get(i).getPoint().y);
 			if (road.contains(p) && !atomList.get(i).isActive())
 			{
 				atomList.get(i).setRoad();
