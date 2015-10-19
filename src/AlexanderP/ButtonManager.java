@@ -20,15 +20,20 @@ public class ButtonManager
 		
 		ArrayList<Button> buttonList = new ArrayList<Button>();
 		
-		Button goopButton = new Button(10, 450, 100, 50, "Goop ($10)", new Color(100, 100, 100));
-		Button concreteButton = new Button(110, 450, 100, 50, "Concrete ($20)", new Color(100, 100, 100));
-		Button steelButton = new Button(210, 450, 100, 50, "Steel ($50)", new Color(100, 100, 100));
-		Button liquidButton = new Button(310, 450, 100, 50, "Liquid ($2)", new Color(100, 100, 100));
+		Button goopButton = new Button(20, 900, 200, 100, "Goop ($10)", new Color(100, 100, 100));
+		Button concreteButton = new Button(220, 900, 200, 100, "Concrete ($20)", new Color(100, 100, 100));
+		Button steelButton = new Button(420, 900, 200, 100, "Steel ($50)", new Color(100, 100, 100));
+		Button liquidButton = new Button(620, 900, 200, 100, "Liquid ($2)", new Color(100, 100, 100));
+		
+		Button pauseButton = new Button(830, 900, 200, 100, "Pause/Unpause", new Color(100, 100, 100));
+		Button clearButton = new Button(1040, 900, 160, 100, "Clear Atoms", new Color(100, 100, 100));
 		
 		buttonList.add(goopButton);
 		buttonList.add(concreteButton);
 		buttonList.add(steelButton);
 		buttonList.add(liquidButton);
+		buttonList.add(pauseButton);
+		buttonList.add(clearButton);
 		
 		return buttonList;
 	}

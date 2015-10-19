@@ -24,7 +24,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	Thread t = new Thread(this);
 	ArrayList<Point2D.Double> pList = new ArrayList<Point2D.Double>();
 	ArrayList<Integer> aList = new ArrayList<Integer>();
-	QuadTree root = new QuadTree(-100, -100, 800, 800);
+	QuadTree root = new QuadTree(-100, -100, 1800, 1800);
 	Rectangle worldBorder = new Rectangle();
 	//QuadTree root = new QuadTree(0, 0, 800, 800);
 	int minQuadSize = 100;
@@ -40,7 +40,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	double tm = 0;
 	double paintTime = 0;
 	double repaintTime = 17;
-	static double scale = 1.5;
+	static double scale = 1;
 	
 	double maxLengthChange = 0;
 	double maxSpeed = 0;
@@ -96,10 +96,10 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addMouseListener(this);
 		addKeyListener(this);
-		worldBorder.setBounds(0, 0, 600, 500);
+		worldBorder.setBounds(0, 0, 1200, 1000);
 		
 		background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("background.png"));
-		background = background.getScaledInstance((int)(600*scale), (int)(500*scale), 1);
+		background = background.getScaledInstance((int)(1200*scale), (int)(1000*scale), 1);
 		
 		//makes levels
 		lGen.generateLevels(levelList);
@@ -114,56 +114,56 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		
 		//Initializes materials
 		goop.setMass(1);
-		goop.setMinDist(13);
-		goop.setMaxDist(40);
+		goop.setMinDist(26);
+		goop.setMaxDist(80);
 		goop.setDampener(10);
-		goop.setTensileStrength(0.3);
+		goop.setTensileStrength(0.28);
 		goop.setCompressiveStrength(1);
-		goop.setEquilibrium(30);
-		goop.setSpacing(30);
+		goop.setEquilibrium(60);
+		goop.setSpacing(60);
 		goop.setCost(10);
 		goop.setColor(new Color(30, 255, 50));
 		
 		concrete.setMass(1.3);
-		concrete.setMinDist(13);
-		concrete.setMaxDist(40);
+		concrete.setMinDist(26);
+		concrete.setMaxDist(80);
 		concrete.setDampener(13);
 		concrete.setTensileStrength(0.1);
 		concrete.setCompressiveStrength(1);
-		concrete.setEquilibrium(30);
-		concrete.setSpacing(31);
+		concrete.setEquilibrium(60);
+		concrete.setSpacing(62);
 		concrete.setCost(20);
 		concrete.setColor(new Color(150, 150, 150));
 		
 		steel.setMass(1);
-		steel.setMinDist(13);
-		steel.setMaxDist(40);
+		steel.setMinDist(26);
+		steel.setMaxDist(80);
 		steel.setDampener(13);
 		steel.setTensileStrength(0.5);
 		steel.setCompressiveStrength(0.5);
-		steel.setEquilibrium(30);
-		steel.setSpacing(35);
+		steel.setEquilibrium(60);
+		steel.setSpacing(70);
 		steel.setCost(50);
 		steel.setColor(new Color(50, 50, 50));
 		
 		liquid.setMass(1);
-		liquid.setMinDist(13);
-		liquid.setMaxDist(40);
+		liquid.setMinDist(26);
+		liquid.setMaxDist(80);
 		liquid.setDampener(13);
 		liquid.setTensileStrength(0);
 		liquid.setCompressiveStrength(0);
-		liquid.setEquilibrium(30);
-		liquid.setSpacing(25);
+		liquid.setEquilibrium(60);
+		liquid.setSpacing(50);
 		liquid.setCost(2);
 		liquid.setColor(new Color(50, 50, 255));
 		
 		car.setMass(3);
-		car.setMinDist(13);
-		car.setMaxDist(50);
+		car.setMinDist(26);
+		car.setMaxDist(100);
 		car.setDampener(13);
 		car.setTensileStrength(1);
 		car.setCompressiveStrength(1);
-		car.setEquilibrium(30);
+		car.setEquilibrium(60);
 		car.setCost(0);
 		car.setColor(new Color(255, 0, 0));
 	}
@@ -210,7 +210,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				paintTime += 1000*timeStep;
 				
 
-					bManager.checkButtons(buttonList, new Point(mouseX, mouseY));
+				bManager.checkButtons(buttonList, new Point(mouseX, mouseY));
 				
 				
 				
@@ -225,7 +225,13 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					selectedMaterial = steel;
 				if (bManager.findButtonPressed(buttonList, "Liquid ($2)"))
 					selectedMaterial = liquid;
+				if (bManager.findButtonPressed(buttonList, "Pause/Unpause"))
+					pause = !pause;
+				if (bManager.findButtonPressed(buttonList, "Clear Atoms"))
+					clear = true;
 				}
+				
+				
 				pressed = false;
 				
 				//places atoms with mouse
@@ -318,11 +324,14 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				    //removes ones that are too close together
 					Collider.removeOverlappers(atomList, 15);
 					
+					//sets in road
+					currentLevel.setRoad(atomList);
+					
 					//adds "car"
 					Collider.removeCars(atomList, car);
 					setter.init(atomList, 1, car);
 					carLocation = atomList.size()-1;
-					atomList.get(carLocation).setPosition(currentLevel.road.x+50, currentLevel.road.y-50);
+					atomList.get(carLocation).setPosition(currentLevel.road.x+100, currentLevel.road.y-100);
 					atomList.get(carLocation).setVelocity(100*timeStep, 100*timeStep);
 					atomList.get(carLocation).setActive();
 					
@@ -449,11 +458,12 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					else if (carLocation != -1)
 					{
 						Atom finishLine = new Atom();
-						finishLine.setPosition(currentLevel.getRoad().x+currentLevel.getRoad().width, currentLevel.getRoad().y);
+
 						double dist = Collider.getDist(atomList.get(carLocation), finishLine);
 						//System.out.println(dist);
-						if (dist < 50)
+						if ((currentLevel.getRoad().x+currentLevel.getRoad().width)-atomList.get(carLocation).getPoint().x < 50)
 						{
+							
 							currentLevel.pass();
 						}
 					}
@@ -522,17 +532,17 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		g2.setColor(new Color(0, 0, 0));
 		
 		//draws background
-		g2.drawImage(background, 0, 0, 600, 500, this);
+		g2.drawImage(background, 0, 0, 1200, 1000, this);
 		
 		//draws level number and cost, also material options
-		g2.setFont(new Font("TimesRoman", Font.PLAIN, 50));
-		g2.drawString(Integer.toString(currentLevelNumber), 550, 70);
+		g2.setFont(new Font("TimesRoman", Font.PLAIN, 100));
+		g2.drawString("Level: "+Integer.toString(currentLevelNumber), 800, 140);
 		
-		g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-		g2.drawString("Budget: "+currentLevel.getBudget(), 450, 100);
+		g2.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+		g2.drawString("Budget: "+currentLevel.getBudget(), 900, 200);
 		
-		g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-		g2.drawString("Cost: "+currentCost, 450, 120);
+		g2.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+		g2.drawString("Cost: "+currentCost, 900, 240);
 		
 		
 		//draws messages
@@ -543,10 +553,10 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				
 		if (overBudgetMessageTime < maxOverBudgetMessageTime && clearMessageTime >= maxClearMessageTime)
 		{
-			g2.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+			g2.setFont(new Font("TimesRoman", Font.PLAIN, 60));
 
-			g2.drawString("You went over budget,", 100, 100);
-			g2.drawString("so we wrecked your bridge.", 100, 150);
+			g2.drawString("You went over budget,", 400, 400);
+			g2.drawString("so we wrecked your bridge.", 400, 600);
 		}
 		if (overBudgetMessageTime >= maxOverBudgetMessageTime && clearMessageTime < maxClearMessageTime)
 		{
@@ -561,25 +571,27 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		if (currentLevelNumber == 0)
 		{
 			
-			g2.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-			g2.drawString("BRIDGE BUILDER", 40, 50);
-			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-			g2.drawString("How to play: ", 40, 100);
-			g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-			g2.drawString("Click and drag to fill a rectangle with atoms.", 40, 130);
-			g2.drawString("Connect the bridge so the red ball can move across.", 40, 160);
-			g2.drawString("This is a hardpoint,", 40, 250);
-			g2.drawString("atoms stick to it.", 40, 270);
-			g2.drawString("Atoms inside this rectangle", 40, 370);
-			g2.drawString("are set to road.", 40, 390);
-			g2.drawString("Press \"p\" or SPACE to toggle pause.", 40, 420);
-			g2.drawString("Press BACKSPACE or \"c\" to reset.", 40, 440);
+			g2.setFont(new Font("TimesRoman", Font.PLAIN, 60));
+			g2.drawString("BRIDGE BUILDER", 80, 100);
+			g2.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+			g2.drawString("How to play: ", 80, 200);
+			g2.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+			g2.drawString("Click and drag to fill a rectangle with atoms.", 80, 260);
+			g2.drawString("Connect the bridge so the red ball can move across.", 80, 320);
+			g2.drawString("This is a hardpoint,", 280, 500);
+			g2.drawString("atoms stick to it.", 280, 540);
+			g2.drawString("Atoms inside this  ---->", 80, 740);
+			g2.drawString("rectangle are set to road.", 80, 780);
+			g2.drawString("Press \"p\" or SPACE to toggle pause.", 80, 840);
+			g2.drawString("Press BACKSPACE or \"c\" to reset.", 80, 880);
 		}
 		
 		//draws cost
-		g2.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-		g2.drawString("Chose materials by pressing numbers", 40, 470);
-		g2.drawString("1: Goop, $10   2: Concrete, $20   3: Steel, $30   4: Liquid, $2", 40, 495);
+		/*
+		g2.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+		g2.drawString("Chose materials by pressing numbers", 80, 940);
+		g2.drawString("1: Goop, $10   2: Concrete, $20   3: Steel, $30   4: Liquid, $2", 80, 990);
+		*/
 		
 		//draws level
 		currentLevel.draw(g2);
@@ -619,7 +631,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	public static void main(String[] args)
 	{
 		run frame = new run ();
-		frame.setSize((int)(600*scale), (int)(500*scale));
+		frame.setSize((int)(1200*scale), (int)(1000*scale));
 		frame.setVisible(true);
 	}
 	public void update(Graphics g)
@@ -682,8 +694,6 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				currentCost += atomList.get(i).m.getCost();
 			}
 			
-			//sets atoms to road
-			currentLevel.setRoad(atomList);
 		}
 		
 		//1

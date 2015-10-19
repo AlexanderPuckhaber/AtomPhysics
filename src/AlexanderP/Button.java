@@ -1,6 +1,7 @@
 package AlexanderP;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
@@ -12,6 +13,7 @@ public class Button
 	boolean pressed, visible;
 	String s;
 	Color c, oldC;
+	double highlightTime;
 	
 	public Button(double nX, double nY, double nW, double nH, String nS, Color nC)
 	{
@@ -24,6 +26,8 @@ public class Button
 		s = nS;
 		c = nC;
 		oldC = c;
+		
+		highlightTime = 0;
 		
 		pressed = false;
 	}
@@ -41,25 +45,38 @@ public class Button
 	{
 		if (r.contains(p))
 		{
+			highlightTime += run.timeStep*3;
+			int mult = 50;
 			
-			int tmpR = c.getRed();
-			int tmpG = c.getGreen();
-			int tmpB = c.getBlue();
+			int tmpR = oldC.getRed();
+			int tmpG = oldC.getGreen();
+			int tmpB = oldC.getBlue();
 			
 			
-			tmpR += 20;
+			tmpR += mult*Math.sin(highlightTime);
 			if (tmpR > 255)
 				tmpR = 255;
+			else if (tmpR < 0)
+				tmpR = 0;
 			
-			tmpG += 20;
+			tmpG += mult*Math.cos(highlightTime*1.123);
 			if (tmpG > 255)
 				tmpG = 255;
+			else if (tmpG < 0)
+				tmpG = 0;
+			
+			tmpB += mult*Math.cos(highlightTime*.87+3);
+			if (tmpB > 255)
+				tmpB = 255;
+			else if (tmpB < 0)
+				tmpB = 0;
 			
 			c = new Color(tmpR, tmpG, tmpB);
 		}
 		else
 		{
 			c = oldC;
+			highlightTime = 0;
 		}
 	}
 	
@@ -78,6 +95,7 @@ public class Button
 		g.setColor(c);
 		g.fill3DRect((int)x, (int)y, (int)w, (int)h, true);
 		g.setColor(Color.BLACK);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 		g.drawString(s, (int)x, (int)y+10+(int)(h/2));
 	}
 	
