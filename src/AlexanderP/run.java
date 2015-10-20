@@ -40,7 +40,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 	double tm = 0;
 	double paintTime = 0;
 	double repaintTime = 17;
-	static double scale = 1;
+	static double scale = 0.8;
 	
 	double maxLengthChange = 0;
 	double maxSpeed = 0;
@@ -117,7 +117,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		goop.setMinDist(26);
 		goop.setMaxDist(80);
 		goop.setDampener(10);
-		goop.setTensileStrength(0.28);
+		goop.setTensileStrength(0.1);
 		goop.setCompressiveStrength(1);
 		goop.setEquilibrium(60);
 		goop.setSpacing(60);
@@ -157,8 +157,8 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		liquid.setCost(2);
 		liquid.setColor(new Color(50, 50, 255));
 		
-		car.setMass(3);
-		car.setMinDist(26);
+		car.setMass(7);
+		car.setMinDist(36);
 		car.setMaxDist(100);
 		car.setDampener(13);
 		car.setTensileStrength(1);
@@ -458,12 +458,11 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					else if (carLocation != -1)
 					{
 						Atom finishLine = new Atom();
-
+						finishLine.setPosition(currentLevel.getRoad().x+currentLevel.getRoad().width-50, currentLevel.getRoad().y);
 						double dist = Collider.getDist(atomList.get(carLocation), finishLine);
 						//System.out.println(dist);
-						if ((currentLevel.getRoad().x+currentLevel.getRoad().width)-atomList.get(carLocation).getPoint().x < 50)
+						if (dist < 50)
 						{
-							
 							currentLevel.pass();
 						}
 					}

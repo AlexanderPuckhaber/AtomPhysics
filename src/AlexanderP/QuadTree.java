@@ -506,7 +506,7 @@ public class QuadTree
 					if (y < atomList.size())
 					{
 						a = atomList.get(y);
-						System.out.println(y);
+		
 						//if (Math.sqrt(Math.pow(a.getPoint().x-mX, 2)+Math.pow(a.getPoint().y-mY, 2)) < maxDist)
 						{
 							a.setColor(new Color(255, 255, 0));

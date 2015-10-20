@@ -41,7 +41,7 @@ public class Atom {
     	if (!inHardPoint)
     	{
     	p.x += xVel*timeStep;
-    	yVel -= 100*timeStep;
+    	yVel -= 200*timeStep;
     	p.y -= yVel*timeStep;
     	}
 
