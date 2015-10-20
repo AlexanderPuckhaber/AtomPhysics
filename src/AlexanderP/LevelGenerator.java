@@ -1,5 +1,6 @@
 package AlexanderP;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,6 +15,7 @@ public class LevelGenerator {
 	public LevelGenerator()
 	{
 		highScore = loadHighScore();
+		System.out.println(highScore);
 	}
 	
 	//this is here so it doesn't clutter the run method
@@ -24,7 +26,8 @@ public class LevelGenerator {
 		Level nL = new Level();
 		nL.addHardPoint(new Rectangle(600, 400, 200, 200));
 		
-		nL.setRoad(new Rectangle(500, 700, 200, 200));
+		nL.addRoad(new Rectangle(500, 700, 200, 200));
+		nL.setTarget(new Point(600, 700));
 		nL.setBudget(9001);
 		
 		levelList.add(nL);
@@ -34,7 +37,8 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(0, 300, 100, 400));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 400));
 		
-		nL.setRoad(new Rectangle(0, 300, 1200, 100));
+		nL.addRoad(new Rectangle(0, 300, 1200, 100));
+		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(1000);
 		
 		levelList.add(nL);
@@ -45,7 +49,8 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(600, 600, 100, 100));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 400));
 		
-		nL.setRoad(new Rectangle(0, 300, 1200, 100));
+		nL.addRoad(new Rectangle(0, 300, 1200, 100));
+		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(700);
 		
 		levelList.add(nL);
@@ -57,7 +62,8 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(800, 200, 100, 100));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 800));
 		
-		nL.setRoad(new Rectangle(0, 300, 1200, 100));
+		nL.addRoad(new Rectangle(0, 300, 1200, 100));
+		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(600);
 		
 		levelList.add(nL);
@@ -69,7 +75,8 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(800, 100, 100, 100));
 		nL.addHardPoint(new Rectangle(1100, 700, 100, 800));
 		
-		nL.setRoad(new Rectangle(0, 300, 1200, 100));
+		nL.addRoad(new Rectangle(0, 300, 1200, 100));
+		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(800);
 		
 		levelList.add(nL);
@@ -79,7 +86,8 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(0, 300, 100, 400));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 400));
 		
-		nL.setRoad(new Rectangle(0, 200, 1200, 100));
+		nL.addRoad(new Rectangle(0, 200, 1200, 100));
+		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(3000);
 		
 		levelList.add(nL);
@@ -91,7 +99,8 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(800, 200, 100, 100));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 800));
 		
-		nL.setRoad(new Rectangle(0, 700, 1200, 100));
+		nL.addRoad(new Rectangle(0, 700, 1200, 100));
+		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(1800);
 		
 		levelList.add(nL);
@@ -103,7 +112,8 @@ public class LevelGenerator {
 				nL.addHardPoint(new Rectangle(400, 50, 50, 50));
 				nL.addHardPoint(new Rectangle(550, 350, 50, 400));
 				
-				nL.setRoad(new Rectangle(0, 150, 600, 50));
+				nL.addRoad(new Rectangle(0, 150, 600, 50));
+				nL.setTarget(new Point(1200, 300));
 				nL.setBudget(400);
 				
 				levelList.add(nL);
@@ -138,7 +148,7 @@ public class LevelGenerator {
 	            FileWriter fStream = new FileWriter("highScore.txt");
 	            BufferedWriter out = new BufferedWriter(fStream);
 
-	            out.write(Integer.toString(highScore));
+	            out.write(Integer.toString(5));
 	            out.close();
 	        }
 	        catch (Exception e)

@@ -331,7 +331,8 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					Collider.removeCars(atomList, car);
 					setter.init(atomList, 1, car);
 					carLocation = atomList.size()-1;
-					atomList.get(carLocation).setPosition(currentLevel.road.x+100, currentLevel.road.y-100);
+					//first road in road list
+					atomList.get(carLocation).setPosition(currentLevel.roadList.get(0).x+100, currentLevel.roadList.get(0).y-100);
 					atomList.get(carLocation).setVelocity(100*timeStep, 100*timeStep);
 					atomList.get(carLocation).setActive();
 					
@@ -457,9 +458,8 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					//uses another atom to check for distance
 					else if (carLocation != -1)
 					{
-						Atom finishLine = new Atom();
-						finishLine.setPosition(currentLevel.getRoad().x+currentLevel.getRoad().width-50, currentLevel.getRoad().y);
-						double dist = Collider.getDist(atomList.get(carLocation), finishLine);
+						
+						double dist = Math.sqrt(Math.pow(currentLevel.getTarget().x-atomList.get(carLocation).getPoint().x, 2)+Math.pow(currentLevel.getTarget().y-atomList.get(carLocation).getPoint().y, 2));
 						//System.out.println(dist);
 						if (dist < 50)
 						{
