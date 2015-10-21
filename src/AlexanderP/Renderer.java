@@ -11,7 +11,7 @@ public class Renderer {
 	public void drawAndHighlightAtoms(Graphics2D g, ArrayList<Atom> atomList,
 			QuadTree root, int mouseX, int mouseY, boolean pressed) {
 		for (int n = 0; n < atomList.size(); n++) {
-			atomList.get(n).setColor(atomList.get(n).getMaterial().getColor());
+			atomList.get(n).setColor(atomList.get(n).getMaterial().getColor(), false);
 		}
 		root.highlightAtom(g, mouseX, mouseY, pressed, atomList);
 		g.setColor(new Color(0, 0, 0));

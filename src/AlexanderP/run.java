@@ -117,7 +117,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		goop.setMinDist(26);
 		goop.setMaxDist(80);
 		goop.setDampener(10);
-		goop.setTensileStrength(0.1);
+		goop.setTensileStrength(0.2);
 		goop.setCompressiveStrength(1);
 		goop.setEquilibrium(60);
 		goop.setSpacing(60);
@@ -142,7 +142,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		steel.setTensileStrength(0.5);
 		steel.setCompressiveStrength(0.5);
 		steel.setEquilibrium(60);
-		steel.setSpacing(70);
+		steel.setSpacing(68);
 		steel.setCost(50);
 		steel.setColor(new Color(50, 50, 50));
 		
@@ -467,6 +467,13 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 						}
 					}
 					
+					//if current level passed
+					if (currentLevel.passed)
+					{
+						//update highScore
+						lGen.writeHighScore(currentLevelNumber);
+					}
+					
 					//after tutorial, skip to highscore level
 					if (currentLevel.passed && currentLevelNumber == 0)
 					{
@@ -478,8 +485,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					
 					if (currentLevel.passed)
 					{
-						//update highScore
-						lGen.writeHighScore(currentLevelNumber);
+						
 						
 						if (currentLevelNumber < levelList.size()-1)
 						{
@@ -606,6 +612,15 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		
 		
 		drawer.drawBonds(g2, bondList, atomList);
+		
+		
+		//draws cursor
+		Atom tmpAtom = new Atom();
+		tmpAtom.setMaterial(selectedMaterial);
+		tmpAtom.setColor(selectedMaterial.getColor(), false);
+		tmpAtom.setPosition(mouseX, mouseY-selectedMaterial.getMinDist());
+		tmpAtom.draw(g2);
+		
 		
 		
 		/*

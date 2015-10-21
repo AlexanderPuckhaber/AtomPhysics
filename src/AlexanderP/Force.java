@@ -11,7 +11,7 @@ public class Force {
 		
 		double wF = 500;
 		double sF = 50000;
-		double moveForce = 4;
+		double moveForce = 6;
 		
 		b.setLength(Collider.getDist(a1, a2));
 		

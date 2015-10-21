@@ -126,9 +126,9 @@ public class Atom {
     }
     
     //also randomizes color
-    public void setColor(Color newColor) 
+    public void setColor(Color newColor, boolean randomize) 
     {
-    	if (firstStep)
+    	if (firstStep && randomize)
     	{
     	int r = newColor.getRed();
     	int g = newColor.getGreen();

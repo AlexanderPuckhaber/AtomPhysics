@@ -52,7 +52,7 @@ public class setter {
 		{
 			Atom newAtom = new Atom();
 			newAtom.setMaterial(m);
-			newAtom.setColor(m.getColor());
+			newAtom.setColor(m.getColor(), true);
 			
 			atomList.add(newAtom);
 		}

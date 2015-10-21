@@ -39,14 +39,15 @@ public class LevelGenerator {
 		
 		nL.addRoad(new Rectangle(0, 300, 1200, 100));
 		nL.setTarget(new Point(1200, 300));
-		nL.setBudget(1000);
+		nL.setBudget(1200);
 		
 		levelList.add(nL);
 		
 		//#2
 		nL = new Level();
 		nL.addHardPoint(new Rectangle(0, 300, 100, 400));
-		nL.addHardPoint(new Rectangle(600, 600, 100, 100));
+		nL.addHardPoint(new Rectangle(400, 500, 100, 100));
+		nL.addHardPoint(new Rectangle(800, 500, 100, 100));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 400));
 		
 		nL.addRoad(new Rectangle(0, 300, 1200, 100));
@@ -77,7 +78,7 @@ public class LevelGenerator {
 		
 		nL.addRoad(new Rectangle(0, 300, 1200, 100));
 		nL.setTarget(new Point(1200, 300));
-		nL.setBudget(800);
+		nL.setBudget(1000);
 		
 		levelList.add(nL);
 		
@@ -99,20 +100,44 @@ public class LevelGenerator {
 		nL.addHardPoint(new Rectangle(800, 200, 100, 100));
 		nL.addHardPoint(new Rectangle(1100, 300, 100, 800));
 		
-		nL.addRoad(new Rectangle(0, 700, 1200, 100));
+		nL.addRoad(new Rectangle(0, 300, 400, 100));
+		nL.addRoad(new Rectangle(400, 350, 400, 100));
+		nL.addRoad(new Rectangle(700, 300, 500, 100));
 		nL.setTarget(new Point(1200, 300));
 		nL.setBudget(1800);
 		
 		levelList.add(nL);
 		
-		//#PLACEHOLDER
+		//7
+		nL = new Level();
+		nL.addHardPoint(new Rectangle(600, 100, 200, 200));
+		
+		nL.addRoad(new Rectangle(100, 600, 300, 300));
+		nL.addRoad(new Rectangle(0, 300, 300, 300));
+		nL.setTarget(new Point(800, 900));
+		nL.setBudget(2000);
+		
+		levelList.add(nL);
+		
+		//#PLACEHOLDER U WIN
 				nL = new Level();
-				nL.addHardPoint(new Rectangle(0, 350, 50, 400));
-				nL.addHardPoint(new Rectangle(200, 50, 50, 50));
-				nL.addHardPoint(new Rectangle(400, 50, 50, 50));
-				nL.addHardPoint(new Rectangle(550, 350, 50, 400));
+				nL.addHardPoint(new Rectangle(50, 200, 100, 400));
+				nL.addHardPoint(new Rectangle(150, 550, 200, 50));
+				nL.addHardPoint(new Rectangle(350, 200, 100, 400));
 				
-				nL.addRoad(new Rectangle(0, 150, 600, 50));
+				nL.addHardPoint(new Rectangle(500, 200, 50, 400));
+				nL.addHardPoint(new Rectangle(600, 400, 50, 200));
+				nL.addHardPoint(new Rectangle(700, 200, 50, 400));
+				nL.addHardPoint(new Rectangle(500, 500, 200, 100));
+				
+				nL.addHardPoint(new Rectangle(800, 200, 100, 100));
+				nL.addHardPoint(new Rectangle(800, 400, 100, 200));
+				
+				nL.addHardPoint(new Rectangle(950, 200, 50, 400));
+				nL.addHardPoint(new Rectangle(950, 200, 100, 50));
+				nL.addHardPoint(new Rectangle(1050, 200, 50, 400));
+				
+				nL.addRoad(new Rectangle(0, 900, 1200, 50));
 				nL.setTarget(new Point(1200, 300));
 				nL.setBudget(400);
 				
