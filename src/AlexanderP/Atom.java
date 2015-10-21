@@ -84,7 +84,7 @@ public class Atom {
     	if (isRoad)
     	{
     		g.setColor(Color.black);
-    		g.fillOval((int)(p.x-m.getMinDist())+5, (int)(p.y-m.getMinDist())+5, (int)(2*m.getMinDist()-10), (int)(2*m.getMinDist())-10);
+    		g.fillOval((int)(p.x-m.getMinDist()+m.getMinDist()/2), (int)(p.y-m.getMinDist()+m.getMinDist()/2), (int)(2*m.getMinDist()-m.getMinDist()), (int)(2*m.getMinDist()-m.getMinDist()));
     		g.setColor(c);
     	}
     	

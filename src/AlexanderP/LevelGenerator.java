@@ -89,7 +89,7 @@ public class LevelGenerator {
 		
 		nL.addRoad(new Rectangle(0, 200, 1200, 100));
 		nL.setTarget(new Point(1200, 300));
-		nL.setBudget(3000);
+		nL.setBudget(1200);
 		
 		levelList.add(nL);
 		
@@ -139,7 +139,7 @@ public class LevelGenerator {
 				
 				nL.addRoad(new Rectangle(0, 900, 1200, 50));
 				nL.setTarget(new Point(1200, 300));
-				nL.setBudget(400);
+				nL.setBudget(578230495);
 				
 				levelList.add(nL);
 		

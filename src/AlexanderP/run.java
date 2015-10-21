@@ -131,7 +131,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		concrete.setTensileStrength(0.1);
 		concrete.setCompressiveStrength(1);
 		concrete.setEquilibrium(60);
-		concrete.setSpacing(62);
+		concrete.setSpacing(50);
 		concrete.setCost(20);
 		concrete.setColor(new Color(150, 150, 150));
 		
@@ -232,7 +232,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 				}
 				
 				
-				pressed = false;
+				
 				
 				//places atoms with mouse
 				if (place && pause)
@@ -259,6 +259,13 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					else
 					{
 						rPoint.setLocation(rPoint.x, endPoint.y);
+					}
+					
+					if (dX == 0 && dY == 0 && pressed && mouseY < 900)
+					{
+						//place one atom
+						setter.init(atomList, 1, selectedMaterial);
+						atomList.get(atomList.size()-1).setPosition(rPoint.x, rPoint.y);
 					}
 					
 					if (doRectangle && dX != 0 && dY != 0)
@@ -322,7 +329,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					}
 					
 				    //removes ones that are too close together
-					Collider.removeOverlappers(atomList, 15);
+					Collider.removeOverlappers(atomList, 30);
 					
 					//sets in road
 					currentLevel.setRoad(atomList);
@@ -358,6 +365,9 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 					stick = false;
 					//System.out.println(atomList.size());
 				}
+				
+				//sets pressed to false
+				pressed = false;
 				
 				/********
 				 * UPDATES LENGTHS
@@ -461,7 +471,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 						
 						double dist = Math.sqrt(Math.pow(currentLevel.getTarget().x-atomList.get(carLocation).getPoint().x, 2)+Math.pow(currentLevel.getTarget().y-atomList.get(carLocation).getPoint().y, 2));
 						//System.out.println(dist);
-						if (dist < 50)
+						if (dist < car.getMinDist()+50)
 						{
 							currentLevel.pass();
 						}
@@ -577,7 +587,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		{
 			
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 60));
-			g2.drawString("BRIDGE BUILDER", 80, 100);
+			g2.drawString("BRIDGE ENGINEER 2", 80, 100);
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 40));
 			g2.drawString("How to play: ", 80, 200);
 			g2.setFont(new Font("TimesRoman", Font.PLAIN, 40));
@@ -589,6 +599,9 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 			g2.drawString("rectangle are set to road.", 80, 780);
 			g2.drawString("Press \"p\" or SPACE to toggle pause.", 80, 840);
 			g2.drawString("Press BACKSPACE or \"c\" to reset.", 80, 880);
+			
+			g2.setColor(Color.cyan);
+			g2.drawString("Get the car to the cyan circle", 400, 650);
 		}
 		
 		//draws cost
@@ -618,7 +631,7 @@ public class run extends JFrame implements Runnable, MouseListener, KeyListener,
 		Atom tmpAtom = new Atom();
 		tmpAtom.setMaterial(selectedMaterial);
 		tmpAtom.setColor(selectedMaterial.getColor(), false);
-		tmpAtom.setPosition(mouseX, mouseY-selectedMaterial.getMinDist());
+		tmpAtom.setPosition(mouseX, mouseY-selectedMaterial.getMinDist()*0);
 		tmpAtom.draw(g2);
 		
 		
