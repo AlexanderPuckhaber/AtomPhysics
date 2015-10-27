@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class LevelGenerator {
 	
 	public int highScore;
@@ -172,8 +174,8 @@ public class LevelGenerator {
 	        {
 	            FileWriter fStream = new FileWriter("highScore.txt");
 	            BufferedWriter out = new BufferedWriter(fStream);
-
-	            out.write(Integer.toString(5));
+	            
+	            out.write(Integer.toString(currentLevel));
 	            out.close();
 	        }
 	        catch (Exception e)
